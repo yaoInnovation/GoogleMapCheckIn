@@ -16,14 +16,14 @@
 
     <!-- Bootstrap core CSS -->
     {% load staticfiles %}
-    <link href="{% static 'grumblr/css/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'IMHere/css/dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
     {% block customized_css %}
     <!-- Custom styles for this template -->
     {% endblock customized_css %}
   </head>
 
-  <body>
+  <body bgcolor="#061128">
     <!-- Error message -->
     {% block msg_block %}
       <!-- Show error msg -->
@@ -36,16 +36,6 @@
         <script> alert('{{msg}}'); </script>
       {% endif %}
     {% endblock msg_block%}
-
-    <!-- Top logo and text -->
-    {% block logo_text %}
-      <div style="width:90%; display: block; margin:0 auto; text-align:center"> 
-        <div style="margin:0 auto;text-align:center; display:inline-block;">
-          <img src="{% static 'IMHere/images/logo.png' %}" alt="Grumblr_logo" class="logo">
-          <label class="logo_text">IMhere</label>
-        </div>
-      </div>
-    {% endblock logo_text %}
 
     <!-- Content -->
     {% block content %}

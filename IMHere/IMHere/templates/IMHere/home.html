@@ -1,0 +1,22 @@
+{% extends 'IMHere/base.html' %}
+
+{% block title %}
+	<title>index</title>
+{% endblock title %}
+
+{% block customized_css %}
+    <!-- Custom styles for this template -->
+    {% load staticfiles %}
+    <link href="{% static 'IMHere/css/home.css' %}" rel="stylesheet">
+{% endblock customized_css %}
+
+{% block content %}
+	<div>
+		<!-- Search area -->
+
+		<!-- Map -->
+
+		<!-- Check in area -->
+		<label color="white">Your Current Address:</label>
+	</div>
+{% endblock content %}
