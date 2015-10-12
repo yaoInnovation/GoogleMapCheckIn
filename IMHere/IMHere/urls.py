@@ -7,6 +7,7 @@ from django.contrib import admin
 
 urlpatterns = [
 	url(r'^$', 'IMHere.views.index'), #Default page
-	url(r'^index', 'IMHere.views.index', {'template_name':'IMHere/index.html'}, name='index'),
+	url(r'^index', 'IMHere.views.index', name='index'),
 	url(r'^home', 'IMHere.views.home', name='home'),
+	url(r'^send_email', 'IMHere.views.send_email', name='send_email'),
 ]

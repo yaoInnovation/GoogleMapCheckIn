@@ -1,0 +1,55 @@
+{% extends 'IMHere/base.html' %}
+
+{% block title %}
+	<title>index</title>
+{% endblock title %}
+
+{% block customized_css %}
+    <!-- Custom styles for this template -->
+    {% load staticfiles %}
+    <link href="{% static 'IMHere/css/send_email.css' %}" rel="stylesheet">
+{% endblock customized_css %}
+
+{% block content %}
+	<!-- Back link -->
+	<div>
+		<a href="{% url 'home' %}" style="color:#ffffff; font-style: italic;text-decoration:underline; 
+		position:absolute; top:20px; right:40px;">
+		<font color="white" size="5">back</font></a>
+	<div>
+
+	<!-- Logo -->
+	<div style="width: 100%; text-align: center; margin-top:-120px; margin-left: -30px;">
+		<img src="{% static 'IMHere/images/logo.jpg' %}" alt="IMHere_logo" class="logo">
+	</div>
+
+	<!-- Center content -->
+	<div class="container" style="margin:0 auto; position:relative; text-align:center; margin-top:-150px">
+		 <div class="main_content" style="width:90%; margin:0 auto; text-align:center;">
+        	
+        	<div class="col-md-6"> <!-- Location picture -->
+        		<img src="{% static 'IMHere/images/default_address.jpg' %}" height="500" width="500"/>
+        	</div>
+
+        	<div class="col-md-6"> <!-- Email -->
+        		<form method="POST" action="#">
+        			<label for="email_from" class="email_label">From:</label>
+        			<input type="text" id="email_from" value="{{email_from}}" class="form-control" style="margin-bottom:5px;" readonly/>
+        			
+        			<label for="email_to" class="email_label">To:</label>
+        			<input type="text" id="email_to" name="email_to" class="form-control" style="margin-bottom:5px;" autofocus/>
+        			
+        			<label for="email_subject" class="email_label">Subject:</label>
+        			<input type="text" id="email_subject" name="email_subject" class="form-control" style="margin-bottom:5px;" autofocus/>
+        			
+        			<label for="email_content" class="email_label">Content:</label>
+        			<textarea class="email_content" name="email_content" form="postForm" cols="30" rows="5" maxlength="42">
+        				{{email_content}}
+        			</textarea>
+        			<br/>
+
+        			<button class="send_button btn btn-primary">Send!</button>
+        		</form>
+        	</div>
+	</div>
+{% endblock content %}

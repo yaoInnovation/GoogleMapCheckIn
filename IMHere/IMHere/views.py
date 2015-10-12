@@ -7,12 +7,23 @@ def index(request):
 
 def home(request):
 	context = {}
-	if not 'username' in request.POST or not request.POST['username']:
-		context['msg'] = 'please provide a name first!'
+	if request.method == 'GET' and (not 'username' in request.session):
 		return render(request, 'IMHere/index.html')
 
-	# Got username
-	context['username'] = request.POST['username']
+	if request.method == 'POST':
+		if not 'username' in request.POST or not request.POST['username']:
+			context['msg'] = 'please provide a name first!'
+			return render(request, 'IMHere/index.html')
+		# Got username
+		username = request.POST['username']
+		context['username'] = username
+		request.session['username'] = username
+
 	return render(request, 'IMHere/home.html', context)
 
+def send_email(request):
+	context = {}
+	context['email_from'] = 'Yao'
+
+	return render(request, 'IMHere/send_email.html', context)
 
