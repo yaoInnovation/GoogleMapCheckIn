@@ -3,6 +3,8 @@ var marker;
 var searchBox;
 var service;
 var curPosition;
+var curLat; // current latitude
+var curLng; // current longtitude
 var curAddress;
 var current_address_div;
 var req; // Ajax HTTP request
@@ -50,6 +52,8 @@ function pinCallBack(position) {
 	});
 
 	getAddressFromPosition(position)
+	curLat = curPosition.coords.latitude;
+	curLng = curPosition.coords.longitude;
 }
 
 function getAddressFromPosition(position) {
@@ -118,7 +122,9 @@ function createMap() {
 		marker.setPosition(place.geometry.location); // set maker position new
 		
 		// set up current postion
-		curPosition = place.geometry.location;
+		curPosition = place;
+		curLng = curPosition.geometry.location.lng();
+		curLat = curPosition.geometry.location.lat();
 
 		map.fitBounds(bounds); //fit to the bound
 		map.setZoom(15); // set zoom
@@ -144,14 +150,17 @@ function makeAddressVisible() {
  }
 
  function sendEmail(emailAddr) {
- 	var htmlContent = "<html><p>Hi, This is Yao</p><p>Im Here:"
- 	+curAddress.innerHTML.split(":")[1]+"</p><img src='"
- 	+static_map_address()+"'/></html>";
-	alert(htmlContent);
-	var link = "mailto:"+emailAddr+
-             "?&subject=" + escape("IM here!")+
-             "&body=" + htmlContent;
+ 	var username = document.getElementById("username").innerHTML;
+ 	var htmlContent = "Hi, This is " + username +"\nIm Here:\n"+
+ 		"http://localhost:8000/IMHere/get_static_map?latitude="+curLat+
+ 		"&longitude="+curLng
+	
+	var link = "mailto:"+emailAddr+"?"+
+             // "cc=mm6+@andrew.cmu.edu"+
+             "&subject=" + escape("IM here!")+
+             "&body=" + escape(htmlContent);
   	window.location.href = link;
+
 	// $.ajax({
 	// 	type: "POST",
 	// 	url: "https://mandrillapp.com/api/1.0/messages/send.json",
@@ -174,8 +183,11 @@ function makeAddressVisible() {
 	// });
  }
 
- function static_map_address() {
- 	var url = "https://maps.googleapis.com/maps/api/staticmap?center="+ curPosition.coords.latitude+","+curPosition.coords.longitude+"&zoom=15&size=400x400&maptype=roadmap&markers=color:red%7Clabel:Here%7C"+curPosition.coords.latitude+","+curPosition.coords.longitude+"&key=AIzaSyCft27UMj4DLzari4aaiSBGf1xPY7kSJCs";
- 	return url;
- }
+ // function static_map_address() {
+ // 	var url = 'https://maps.googleapis.com/maps/api/staticmap?center='+
+ // 	curPosition.coords.latitude+','+curPosition.coords.longitude +'&zoom=15&size=400x400&maptype=roadmap&markers=color:red%7Clabel:Here%7C'+
+ // 	curPosition.coords.latitude+','+curPosition.coords.longitude+
+ // 	'&key=AIzaSyCft27UMj4DLzari4aaiSBGf1xPY7kSJCs';
+ // 	return url;
+ // }
 
