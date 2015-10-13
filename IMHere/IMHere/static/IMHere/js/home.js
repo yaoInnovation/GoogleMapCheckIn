@@ -3,9 +3,14 @@ var marker;
 var searchBox;
 var service;
 var curPosition;
+var curAddress;
+var current_address_div;
+var req; // Ajax HTTP request
 
 window.onload = function() {
 	createMap();
+	curAddress = document.getElementById("current_address");
+	current_address_div = document.getElementById("current_address_div");
 }
 
 function PinButtonClick() {
@@ -35,8 +40,34 @@ function pinCallBack(position) {
 	  position: coords,
 	  map: map
 	});
+
+	getAddressFromPosition(position)
 }
 
+function getAddressFromPosition(position) {
+	if(window.XMLHttpRequest) {
+        req = new XMLHttpRequest();
+    } else {
+        req = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    req.onreadystatechange = handleAddressConvertResponse;
+    var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude+","
+    	+position.coords.longitude+"&sensor=true";
+    console.log(url);
+    req.open("GET", url, true);
+    req.send();
+}
+
+function handleAddressConvertResponse() {
+    if(req.readyState != 4 || req.status != 200) {
+        return;
+    }
+
+    var text = req.responseText;
+    var address = JSON.parse(text)
+    curAddress.innerHTML = "Your current address: " + address["results"][0]["formatted_address"] + " "; // Update current address
+	makeAddressVisible();
+}
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
@@ -81,5 +112,12 @@ function createMap() {
 
 		map.fitBounds(bounds); //fit to the bound
 		map.setZoom(15); // set zoom
+
+		curAddress.innerHTML = "Your current address: " + document.getElementById('AddressInput').value + " "; // Update current address
+		makeAddressVisible();
 	});
+}
+
+function makeAddressVisible() {
+	current_address_div.style.display = 'block';
 }

@@ -42,15 +42,15 @@
 		</form>
 
 		<!-- Map -->
-		<div id="map-canvas" style="margin:0 auto; position:relative; text-align:center; margin-top:10px"></div>
+		<div id="map-canvas" style="margin:0 auto; position:relative; text-align:center; margin-top:20px"></div>
 
 		<!-- Check in area -->
 		<!-- <div class="container" style="display:none"> -->
-		<div class="container" >
+		<div class="container" id="current_address_div" style="display:none; margin-top:10px" >
 			<form method="POST" id="address_result_form" action="{% url 'send_email' %}">
 				<p>	
 					<font color="white" size="4">
-					Your current location:&nbsp;&nbsp;<a href="javascript:{}" onclick="document.getElementById('address_result_form').submit(); return false;" style="color:#ffffff;font-style: italic;text-decoration:underline;">Check In!</font></a>
+					<label id="current_address">Your current location:</label>&nbsp;&nbsp;<a href="javascript:{}" onclick="document.getElementById('address_result_form').submit(); return false;" style="color:#ffffff;font-style: italic;text-decoration:underline;">Check In!</font></a>
 					</font>
 				</p>
 				{% csrf_token %}
