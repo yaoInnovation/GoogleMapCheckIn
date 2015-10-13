@@ -6,11 +6,19 @@ var curPosition;
 var curAddress;
 var current_address_div;
 var req; // Ajax HTTP request
+var emailAddr;
+
 
 window.onload = function() {
 	createMap();
 	curAddress = document.getElementById("current_address");
 	current_address_div = document.getElementById("current_address_div");
+
+	// Disable form submittion
+	var searchForm = document.getElementById("searchForm");
+	$(searchForm).submit(function() {
+  		return false;
+	});
 }
 
 function PinButtonClick() {
@@ -23,7 +31,7 @@ function PinButtonClick() {
 
 function pinCallBack(position) {
 	curPosition = position;
-	var coords = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	var coords = new google.maps.LatLng(curPosition.coords.latitude, curPosition.coords.longitude);
 
 	var options = {
 	zoom: 15,
@@ -64,7 +72,7 @@ function handleAddressConvertResponse() {
     }
 
     var text = req.responseText;
-    var address = JSON.parse(text)
+    var address = JSON.parse(text);
     curAddress.innerHTML = "Your current address: " + address["results"][0]["formatted_address"] + " "; // Update current address
 	makeAddressVisible();
 }
@@ -105,10 +113,12 @@ function createMap() {
 		var bounds = new google.maps.LatLngBounds();
 		var i, place;
 
-		for(i = 0; place=places[i];i++) {
-			bounds.extend(place.geometry.location);
-			marker.setPosition(place.geometry.location); // set maker position new
-		}
+		place=places[0];
+		bounds.extend(place.geometry.location);
+		marker.setPosition(place.geometry.location); // set maker position new
+		
+		// set up current postion
+		curPosition = place.geometry.location;
 
 		map.fitBounds(bounds); //fit to the bound
 		map.setZoom(15); // set zoom
@@ -121,3 +131,51 @@ function createMap() {
 function makeAddressVisible() {
 	current_address_div.style.display = 'block';
 }
+
+/**
+ * Email
+ */
+
+ function checkIn() {
+    emailAddr = prompt("Please enter the email where you want to send");
+    
+    //Send email
+    sendEmail(emailAddr);
+ }
+
+ function sendEmail(emailAddr) {
+ 	var htmlContent = "<html><p>Hi, This is Yao</p><p>Im Here:"
+ 	+curAddress.innerHTML.split(":")[1]+"</p><img src='"
+ 	+static_map_address()+"'/></html>";
+	alert(htmlContent);
+	var link = "mailto:"+emailAddr+
+             "?&subject=" + escape("IM here!")+
+             "&body=" + htmlContent;
+  	window.location.href = link;
+	// $.ajax({
+	// 	type: "POST",
+	// 	url: "https://mandrillapp.com/api/1.0/messages/send.json",
+	// 	data: {
+	// 		"key": "7JuclCDKBHloNAciR4Jblg",
+	// 		"message": {
+	// 		  "from_email": "ZhouYaoMaster@gmail.com",
+	// 		  "from_name": "yao",
+	// 		  "to": [{
+	// 		        "email": "408431525@qq.com",
+	// 		        "type": "to"
+	// 		   }],
+	// 		  "autotext": "true",
+	// 		  "subject": "IM Here",
+	// 		  "html": htmlContent,
+	// 		}
+	// 	}
+	// }).done(function(response) {
+	// 	console.log(response); // if you're into that sorta thing
+	// });
+ }
+
+ function static_map_address() {
+ 	var url = "https://maps.googleapis.com/maps/api/staticmap?center="+ curPosition.coords.latitude+","+curPosition.coords.longitude+"&zoom=15&size=400x400&maptype=roadmap&markers=color:red%7Clabel:Here%7C"+curPosition.coords.latitude+","+curPosition.coords.longitude+"&key=AIzaSyCft27UMj4DLzari4aaiSBGf1xPY7kSJCs";
+ 	return url;
+ }
+
