@@ -79,16 +79,16 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 function createMap() {
 	map = new google.maps.Map(document.getElementById('map-canvas'), {
 		center: {
-			lat:27.72,
-			lng:85.36
+			lat:40.442630,
+			lng:-79.942950
 		},
 		zoom:15
 	});
 
 	marker = new google.maps.Marker({
 		position: {
-			lat: 27.72,
-			lng: 85.36
+			lat:40.442630,
+			lng:-79.942950
 		},
 		map:map,
 		draggable:false
