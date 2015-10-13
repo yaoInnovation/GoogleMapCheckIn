@@ -151,8 +151,8 @@ function makeAddressVisible() {
 
  function sendEmail(emailAddr) {
  	var username = document.getElementById("username").innerHTML;
- 	var htmlContent = "Hi, This is " + username +"\nIm Here:\n"+
- 		"http://localhost:8000/IMHere/get_static_map?latitude="+curLat+
+ 	var htmlContent = "Hi, This is " + username +".\nI'm Here:\n"+
+ 		"http://127.0.0.1:8000/IMHere/get_static_map?latitude="+curLat+
  		"&longitude="+curLng
 	
 	var link = "mailto:"+emailAddr+"?"+
